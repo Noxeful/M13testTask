@@ -25,7 +25,13 @@
   text-overflow: ellipsis;
 }
 
-.list-item:focus {
+.no-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected-record {
   background-color: #E5E5E5;
 }
 

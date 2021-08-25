@@ -31,4 +31,19 @@ export class ManagerDataObject {
   return result;
   }
 
+  // public static fromServer(data: ManagerDataObject): ManagerDataObject {
+  //   let result: ManagerDataObject = null;
+  //
+  //   if (data) {
+  //     result = new ManagerDataObject();
+  //     result.id = data.id;
+  //     result.name = data.name;
+  //     result.text = data.text;
+  //     result.last_updated = data.last_updated;
+  //     result.status = result.checkStatus(data.status);
+  //   }
+  //
+  //   return result;
+  // }
+
 }

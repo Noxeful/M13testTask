@@ -24,4 +24,8 @@ export class ManagerDataHandlerService {
     return this.http.delete(`${baseUrl}/${name}/${id}`);
   }
 
+  public updateById(name: string, id: number, record: ManagerDataObject): Observable<any> {
+    return this.http.put(`${baseUrl}/${name}/${id}`, record);
+  }
+
 }

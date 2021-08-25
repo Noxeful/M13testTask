@@ -1,86 +1,118 @@
-import {Component, Input, OnInit} from '@angular/core';
+/* tslint:disable */
+/* eslint-disable */
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ManagerDataObject} from "../../entities/managerDataObject";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {debounceTime} from "rxjs/operators";
+import {debounceTime, take} from "rxjs/operators";
 import {ManagerDataHandlerService} from "../../services/manager-data-handler.service";
 import {EventsService} from "../../services/events.service";
-import {error} from "@angular/compiler/src/util";
 
 @Component({
   selector: 'app-manager-form',
   templateUrl: './manager-form.component.html',
   styleUrls: ['./manager-form.component.scss']
 })
-export class ManagerFormComponent implements OnInit {
+export class ManagerFormComponent implements OnInit, OnChanges {
 
   @Input() public tab: string = 'queries';
+  // @ts-ignore
+  @Input() public focusedRecord: ManagerDataObject;
+  @Output() public recordHasBeenChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  public isFormDisabled: boolean = false;
+  public isFormDisabled: boolean = true;
 
-  public name: string = '';
-  public text: string = '';
   public tempRecordsArray: ManagerDataObject[] = [];
-  public focusedRecordId: number = 0; //новая не сохранённая запись всегда имеет айди < 0, сохраненная > 0
-  public focusedRecord: ManagerDataObject | undefined;
+// @ts-ignore
+//   public focusedRecord: ManagerDataObject;
+// @ts-ignore
+  public nameControl: FormControl;
+  // @ts-ignore
+  public textControl: FormControl;
+  // @ts-ignore
+  public recordForm: FormGroup;
 
-  public nameControl: FormControl = new FormControl(this.name, [Validators.required]);
-  public textControl: FormControl = new FormControl(this.text, [Validators.required]);
-  public recordForm: FormGroup = new FormGroup({
-    name: this.nameControl,
-    text: this.textControl,
-  });
+  constructor(private managerDataHandlerService: ManagerDataHandlerService, private eventsService: EventsService) {
+    this.buildRecordForm();
+  }
 
-  constructor(private managerDataHandlerService: ManagerDataHandlerService, private eventsService: EventsService) { }
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.focusedRecord) {
+      this.resetForm();
+      this.fillForm(this.focusedRecord);
+    }
+  }
 
   ngOnInit(): void {
-    this.buildRecordForm(true);
 
     this.eventsService.tempRecordCreated
       .subscribe((data) => {
         this.tempRecordsArray.push(data);
-        this.focusedRecordId = data.id;
-        this.recordForm.enable();
+        this.isFormDisabled = false;
           console.log(data);
         },
         error => console.log(error)
       );
 
-    this.eventsService.recordFocused
+    // this.eventsService.recordFocused
+    //   .subscribe((data) => {
+    //     this.focusedRecord = data;
+    //     this.isFormDisabled = false;
+    //     this.fillForm(data);
+    //
+    //   }, error => console.log(error));
+
+    this.eventsService.recordDeleted
       .subscribe((data) => {
-        console.log(data, 'asdadsads ');
-        this.focusedRecord = data;
-        this.focusedRecordId = data.id;
-        this.name = data.name;
-        this.text = data.text;
-        this.recordForm.enable();
-        this.buildRecordForm(false);
+        this.resetForm();
       }, error => console.log(error));
+
+
 
   }
 
-  private buildRecordForm(disabled: boolean): void {
-    this.nameControl = new FormControl({value: this.name, disabled: disabled}, [Validators.required]);
-    this.textControl = new FormControl({value: this.text, disabled: disabled}, [Validators.required]);
+  public fillForm(data: ManagerDataObject): void {
+    this.nameControl.setValue(data.name, {onlySelf: false, emitEvent: false});
+    this.textControl.setValue(data.text, {onlySelf: false, emitEvent: false});
+    this.recordForm.enable();
+  }
+
+
+  private buildRecordForm(): void {
+    this.nameControl = new FormControl(null, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(30),
+      Validators.pattern('[-_a-zA-Zа-яА-Я0-9]*')
+    ]);
+    this.textControl = new FormControl(null, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(10000)
+    ]);
     this.recordForm = new FormGroup({
       name: this.nameControl,
       text: this.textControl,
     });
+    this.recordForm.disable();
+
     this.recordForm.valueChanges
       .pipe(
         debounceTime(30)
       )
       .subscribe((data) => {
-        this.name = data.name;
-        this.text = data.text;
-      });
+        console.log('from form: ', data);
+        if (data && !this.recordForm.pristine) {
+          this.recordHasBeenChanged.emit(true);
+        }
+      }, error => console.log(error));
   }
 
-  public createNewRecord(name: string, text: string): void {
+  public createNewRecord(): void {
     this.managerDataHandlerService.getAllEntities(this.tab)
       .subscribe((data) => {
         const arr = data;
         const num = Math.max.apply(Math, arr.map((item: ManagerDataObject) => item.id));
-        let newRecord: ManagerDataObject = new ManagerDataObject(num, name, text, new Date(), 'Saved');
+        let newRecord: ManagerDataObject = new ManagerDataObject(num, this.focusedRecord.name, this.focusedRecord.text, new Date(), 'Saved');
         if (newRecord.id < 1) {
           alert('Запись не создана');
         } else {
@@ -88,10 +120,9 @@ export class ManagerFormComponent implements OnInit {
             .subscribe((data) => {
                 console.log(data, ' :createNewRecord Result');
                 this.eventsService.recordSaved.emit(data);
-                this.eventsService.tempRecordSaved.emit(this.focusedRecordId);
-                this.removeSavedRecord(this.focusedRecordId);
-                this.recordForm.reset();
-                this.recordForm.disable();
+                this.eventsService.tempRecordSaved.emit(this.focusedRecord.id);
+                this.removeSavedRecord(this.focusedRecord.id);
+                this.resetForm();
               },
               error => console.log(error)
             );
@@ -101,20 +132,45 @@ export class ManagerFormComponent implements OnInit {
       );
   }
 
-  public onOkButton(name: string, text: string) {
-    if (this.focusedRecordId < 0) {
-      this.createNewRecord(name, text);
-    } else if (this.focusedRecordId > 0) {
+  public updateRecord(): void {
+    if (this.focusedRecord) {
+      const updatedRecord = new ManagerDataObject(this.focusedRecord.id, this.focusedRecord.name, this.focusedRecord.text, new Date(), 'Saved');
+      this.managerDataHandlerService.updateById(this.tab, updatedRecord.id, updatedRecord)
+        .subscribe((data) => {
+          console.log(data, ' :updateRecord Result');
+          this.eventsService.recordUpdated.emit(updatedRecord);
+          this.resetForm();
 
+        }, error => console.log(error));
+    }
+
+  }
+
+  public onOkButton(): void {
+    let a = this.recordForm.valid;
+    console.log(a);
+    if (this.focusedRecord.id < 0) {
+      this.createNewRecord();
+    } else if (this.focusedRecord.id > 0) {
+      this.updateRecord();
     }
   }
 
   public removeSavedRecord(id: number): void {
     const record = this.tempRecordsArray.find((item) => item.id === id);
     if (record) {
-      const recordtIndex = this.tempRecordsArray.indexOf(record);
-      this.tempRecordsArray.splice(recordtIndex, 1);
+      const recordIndex = this.tempRecordsArray.indexOf(record);
+      this.tempRecordsArray.splice(recordIndex, 1);
     }
   }
 
+  public resetForm(): void {
+    this.recordForm.reset();
+    this.recordForm.disable();
+    this.recordForm.markAsPristine();
+    this.isFormDisabled = true;
+  }
+
 }
+/* tslint:enable */
+/* eslint-enable */

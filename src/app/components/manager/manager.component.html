@@ -1,6 +1,6 @@
 <app-tabs></app-tabs>
 <div class="main-container">
 <!--  <app-manager-aside class="aside" [tab]="tab"></app-manager-aside>-->
-  <app-manager-aside class="aside" [tab]="tab" [dataCollection]="this.dataCollection"></app-manager-aside>
-  <app-manager-form class="form" [tab]="tab"></app-manager-form>
+  <app-manager-aside class="aside" [tab]="tab" (onSelect)="onRecordSelect($event)" [dataCollection]="this.dataCollection"></app-manager-aside>
+  <app-manager-form class="form" [tab]="tab" (recordHasBeenChanged)="onRecordChanged($event)" [focusedRecord]="selectedRecord" ></app-manager-form>
 </div>

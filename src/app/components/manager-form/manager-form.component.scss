@@ -35,6 +35,18 @@
   color: #A2483C;
 }
 
+.success-message {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #62A71D;
+}
+
+.neutral-message {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #E0E3E8;
+}
+
 .info-bar {
   display: flex;
   flex-direction: row;
@@ -111,6 +123,7 @@
   text-align: center;
   padding: 9px;
   width: 50%;
+  border: none;
 }
 
 .accept-button-bb:hover {
@@ -124,9 +137,22 @@
   text-align: center;
   padding: 9px;
   width: 50%;
+  border: none;
+
 }
 
 .cancel-button-bb:hover {
   background-color: rgba(76,136,210,0.15);
   transition: 0.9s;
 }
+
+.button-disabled {
+  color: #FFFFFF;
+  background-color: #999999;
+  display: block;
+  text-align: center;
+  padding: 9px;
+  width: 50%;
+  border: none;
+}
+

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Renderer2} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
 import {ManagerDataObject} from "../../entities/managerDataObject";
 import {EventsService} from "../../services/events.service";
 import {ManagerDataHandlerService} from "../../services/manager-data-handler.service";
@@ -11,10 +11,16 @@ import {error} from "@angular/compiler/src/util";
 })
 export class ManagerAsideComponent implements OnInit {
   @Input() public tab: string = 'queries';
-
-  // @Input() public dataCollection: ManagerDataObject[] = [new ManagerDataObject(1, 'Какой то вменяемый но оч длинный запрос', 'kek1', new Date(), 'New'), new ManagerDataObject(2, 'какой то там запрос', 'kek2', new Date(), 'Saved'), new ManagerDataObject(3, 'какой то там еще запрос', 'kek3', new Date(), 'Changed')];
   @Input() public dataCollection: ManagerDataObject[] = [];
 
+  // @Output() public onRecordAdd: EventEmitter<ManagerDataObject> = new EventEmitter<ManagerDataObject>();
+  @Output() public onSelect: EventEmitter<ManagerDataObject> = new EventEmitter<ManagerDataObject>();
+
+  // @Input() public dataCollection: ManagerDataObject[] = [new ManagerDataObject(1, 'Какой то вменяемый но оч длинный запрос', 'kek1', new Date(), 'New'), new ManagerDataObject(2, 'какой то там запрос', 'kek2', new Date(), 'Saved'), new ManagerDataObject(3, 'какой то там еще запрос', 'kek3', new Date(), 'Changed')];
+
+
+  // @ts-ignore
+  public selectedItem: ManagerDataObject;
   public tempRecordId: number = 0;
 
   constructor(private managerDataHandlerService: ManagerDataHandlerService, private eventsService: EventsService, private renderer: Renderer2) { }
@@ -37,12 +43,16 @@ export class ManagerAsideComponent implements OnInit {
   public createNewTempRecord(): void {
     this.tempRecordId -= 1;
     const record = new ManagerDataObject(this.tempRecordId, `Новая запись`, '', new Date(), 'New');
-    this.eventsService.tempRecordCreated.emit(record);
+    this.selectedItem = record;
+    this.onSelect.emit(record);
     this.dataCollection?.push(record);
   }
 
   public onListItemClick(record: ManagerDataObject): void {
-    this.eventsService.recordFocused.emit(record);
+    this.selectedItem = record;
+    this.onSelect.emit(record);
   }
+
+
 
 }

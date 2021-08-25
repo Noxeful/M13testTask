@@ -10,6 +10,8 @@ export class EventsService {
   public tempRecordCreated = new EventEmitter<ManagerDataObject>();
   public tempRecordSaved = new EventEmitter<number>();
   public recordFocused = new EventEmitter<ManagerDataObject>();
+  public recordUpdated = new EventEmitter<ManagerDataObject>();
+  public recordChanged = new EventEmitter<number>();
 
   constructor() { }
 }

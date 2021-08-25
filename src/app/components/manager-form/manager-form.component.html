@@ -1,20 +1,25 @@
-<div [formGroup]="recordForm" class="form-group">
-  <label for="name_fc">Название</label>
-  <textarea [formControl]="nameControl" name="" id="name_fc" class="form-control"></textarea>
-  <div class="error-message">В названии нельзя использовать спецсимволы</div>
-  <label for="text_fc">Текст запроса</label>
-  <textarea [formControl]="textControl" type="textarea" name="" id="text_fc" class="form-control"></textarea>
-  <div class="info-bar">
-    <div class="is-text-correct">Запрос введен верно</div>
-    <div class="symbols-left">Осталось 1234 символов</div>
+<div *ngIf="recordForm">
+  <div [formGroup]="recordForm" class="form-group">
+    <label for="name_fc">Название</label>
+    <textarea [formControl]="nameControl" name="" id="name_fc" class="form-control"></textarea>
+    <div *ngIf="!this.nameControl.valid && !this.isFormDisabled" class="error-message">В названии нельзя использовать спецсимволы, длина от 3 до 30 символов</div>
+    <div *ngIf="this.nameControl.valid && !this.isFormDisabled" class="success-message">Название введено верно</div>
+    <label for="text_fc">Текст запроса</label>
+    <textarea [formControl]="textControl" type="textarea" name="" id="text_fc" class="form-control"></textarea>
+    <div class="info-bar">
+      <div *ngIf="!this.textControl.valid && !this.isFormDisabled" class="error-message">Запрос введен неверно</div>
+      <div *ngIf="this.textControl.valid && !this.isFormDisabled" class="success-message">Запрос введен верно</div>
+      <div *ngIf="!this.isFormDisabled" class="symbols-left">Осталось {{10000-this.textControl.value?.length}} символов</div>
+    </div>
   </div>
-</div>
-<div class="bottom-bar">
-  <div class="bottom-bar-container">
-    <div class="bottom-bar-updated">Применено: 12/01/1990 16:00:37</div>
-    <div class="bottom-bar-buttons">
-      <div class="cancel-button-bb">Отменить измнения</div>
-      <div class="accept-button-bb" (click)="onOkButton(this.name, this.text)">Применить</div>
+  <div class="bottom-bar">
+    <div class="bottom-bar-container">
+      <div *ngIf="this.focusedRecord != null" class="bottom-bar-updated">Применено: {{this.focusedRecord.last_updated | date: 'dd.MM.YYYY HH:mm'}}</div>
+      <div *ngIf="this.focusedRecord == null" class="bottom-bar-updated">Время изменения</div>
+      <div class="bottom-bar-buttons">
+        <button [ngClass]="{'button-disabled': this.recordForm.valid !== true}" [disabled]="this.isFormDisabled" class="cancel-button-bb" (click)="resetForm()">Отменить измнения</button>
+        <button [ngClass]="{'button-disabled': this.recordForm.valid !== true}" [disabled]="!this.recordForm.valid" class="accept-button-bb" (click)="onOkButton()">Применить</button>
+      </div>
     </div>
   </div>
 </div>
