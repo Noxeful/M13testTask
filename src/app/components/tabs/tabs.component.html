@@ -1,0 +1,8 @@
+<div class="tabs">
+  <div [ngClass]="{'active-tab': this.tab === 'queries'}" class="tab" (click)="navigatetToTab('queries')">
+    <img class="svg-icon" src="assets/svg-icons/google-docs.svg"/>
+    ПОИСКОВЫЕ ЗАПРОСЫ</div>
+  <div [ngClass]="{'active-tab': this.tab === 'tags'}" class="tab" (click)="navigatetToTab('tags')">
+    <img class="svg-icon" src="assets/svg-icons/price-tag.svg"/>
+    ТЕГИ</div>
+</div>

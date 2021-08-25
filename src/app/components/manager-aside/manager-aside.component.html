@@ -1,0 +1,18 @@
+<div class="list-container">
+  <ng-container *ngIf="dataCollection">
+    <div *ngFor="let item of dataCollection" class="list-item" tabindex="0">
+      <div (click)="onListItemClick(item)">
+        <img *ngIf="item.status == 'Новый'" class="svg-icon" src="assets/svg-icons/plus.svg"/>
+        <img *ngIf="item.status == 'Изменен'" class="svg-icon" src="assets/svg-icons/question-mark.svg"/>
+        <img *ngIf="item.status == 'Сохранен'" class="svg-icon" src="assets/svg-icons/tick.svg"/>
+        {{item.name}}
+      </div>
+      <div class="inner-li">
+        <img (click)="this.deleteRecord(item.id)" class="svg-icon" src="assets/svg-icons/trash-red.svg"/>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<div (click)="createNewTempRecord()" class="add-button">
+  Добавить запись
+</div>

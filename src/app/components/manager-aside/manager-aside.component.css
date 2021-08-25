@@ -1,0 +1,63 @@
+.svg-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.list-container {
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-y: auto;
+  height: 89vh;
+  width: 100%;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: left;
+  align-items: flex-start;
+
+  padding: 12px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item:focus {
+  background-color: #E5E5E5;
+}
+
+.list-item:hover {
+  background-color: rgba(76,136,210,0.15);
+  transition: 0.9s;
+}
+
+.list-item:hover .inner-li {
+  display: flex;
+  transition: 0.9s;
+}
+
+.add-button {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 1vh;
+  font-weight: 700;
+  border-top: 2px solid #E0E3E8;
+  width: 19.9%;
+  text-align: center;
+  background-color: #FFFFFF;
+  display: block;
+  text-align: center;
+  padding: 9px;
+}
+
+.add-button:hover {
+  background-color: rgba(76,136,210,0.15);
+  transition: 0.9s;
+}
+
+.inner-li {
+  display: none;
+}

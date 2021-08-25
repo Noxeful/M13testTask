@@ -1,0 +1,132 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: flex-start;
+  width: 100%;
+  padding: 15px;
+
+
+  label {
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+}
+
+#name_fc {
+  width: 99%;
+  height: 5vh;
+  border: 2px solid #E0E3E8;
+  border-radius: 5px;
+  margin: 10px;
+  display: flex;
+  overflow: hidden;
+  word-wrap: break-word;
+  /*overflow-y: scroll;*/
+  resize: none;
+  padding: 5px;
+
+}
+
+.error-message {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #A2483C;
+}
+
+.info-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 12px;
+
+  .is-text-correct {
+    color: #62A71D;
+  }
+
+  .symbols-left {
+    color: #999999;
+
+  }
+
+}
+
+#text_fc {
+  width: 99%;
+  height: 66vh;
+  border: 2px solid #E0E3E8;
+  border-radius: 5px;
+  margin: 10px;
+  display: flex;
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-y: auto;
+  resize: none;
+  padding: 5px;
+}
+
+.bottom-bar {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 1vh;
+  font-weight: 700;
+  border-top: 2px solid #E0E3E8;
+  width: 80%;
+  //padding: 10px;
+
+}
+
+.bottom-bar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.bottom-bar-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 26%;
+  background-color: antiquewhite;
+}
+
+.bottom-bar-updated {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+  font-family: Verdana;
+  color: #999999;
+  padding: 9px;
+}
+
+.accept-button-bb {
+  color: #FFFFFF;
+  background-color: #4C88D2;
+  display: block;
+  text-align: center;
+  padding: 9px;
+  width: 50%;
+}
+
+.accept-button-bb:hover {
+  background-color: rgba(76,136,210,0.15);
+  transition: 0.9s;
+}
+
+.cancel-button-bb {
+  background-color: #FFFFFF;
+  display: block;
+  text-align: center;
+  padding: 9px;
+  width: 50%;
+}
+
+.cancel-button-bb:hover {
+  background-color: rgba(76,136,210,0.15);
+  transition: 0.9s;
+}

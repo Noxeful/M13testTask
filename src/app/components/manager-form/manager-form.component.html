@@ -1,0 +1,20 @@
+<div [formGroup]="recordForm" class="form-group">
+  <label for="name_fc">Название</label>
+  <textarea [formControl]="nameControl" name="" id="name_fc" class="form-control"></textarea>
+  <div class="error-message">В названии нельзя использовать спецсимволы</div>
+  <label for="text_fc">Текст запроса</label>
+  <textarea [formControl]="textControl" type="textarea" name="" id="text_fc" class="form-control"></textarea>
+  <div class="info-bar">
+    <div class="is-text-correct">Запрос введен верно</div>
+    <div class="symbols-left">Осталось 1234 символов</div>
+  </div>
+</div>
+<div class="bottom-bar">
+  <div class="bottom-bar-container">
+    <div class="bottom-bar-updated">Применено: 12/01/1990 16:00:37</div>
+    <div class="bottom-bar-buttons">
+      <div class="cancel-button-bb">Отменить измнения</div>
+      <div class="accept-button-bb" (click)="onOkButton(this.name, this.text)">Применить</div>
+    </div>
+  </div>
+</div>
