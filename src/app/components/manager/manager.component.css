@@ -1,13 +1,11 @@
 .aside {
   display: flex;
   flex-direction: column;
-  /*justify-content: normal;*/
   text-align: left;
   align-items: flex-start;
   width: 20%;
   height: 100vh;
   border-right: 2px solid #E0E3E8;
-  /*padding: 10px;*/
   text-overflow: hidden;
 
 }
@@ -19,7 +17,6 @@
   text-align: center;
   width: 80%;
   height: 100vh;
-  /*padding: 10px 3px 3px 3px;*/
 
 }
 

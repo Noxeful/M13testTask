@@ -1,6 +1,17 @@
 <app-tabs></app-tabs>
 <div class="main-container">
-<!--  <app-manager-aside class="aside" [tab]="tab"></app-manager-aside>-->
-  <app-manager-aside class="aside" [tab]="tab" (onSelect)="onRecordSelect($event)" [dataCollection]="this.dataCollection"></app-manager-aside>
-  <app-manager-form class="form" [tab]="tab" (recordHasBeenChanged)="onRecordChanged($event)" [focusedRecord]="selectedRecord" ></app-manager-form>
+  <app-manager-aside class="aside"
+                     (onSelect)="onRecordSelect($event)"
+                     [tab]="tab"
+                     [dataCollection]="this.recordCollection"
+                     [isSavedToasterOn]="isSavedToasterOn">
+
+  </app-manager-aside>
+  <app-manager-form class="form"
+                    (recordHasBeenChanged)="onRecordChanged($event)"
+                    (restoreRecord)="onRecordRestore($event)"
+                    (recordSaved)="showSavedToaster($event)"
+                    [tab]="tab"
+                    [focusedRecord]="selectedRecord" >
+  </app-manager-form>
 </div>

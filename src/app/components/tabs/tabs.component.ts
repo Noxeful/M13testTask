@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {EventsService} from "../../services/events.service";
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {EventsService} from '../../services/events.service';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 
 @Component({
   selector: 'app-tabs',
@@ -16,12 +16,12 @@ export class TabsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap
       .subscribe( (params: ParamMap) => {
-        let param = params.get('tab');
+        const param = params.get('tab');
         if (param) {
-          let data: string = param.replace(':','');
+          const data: string = param.replace(':','');
           this.tab = data;
         }
-      });
+      }, error => console.log(error));
   }
 
   public navigatetToTab(tab: string): void  {

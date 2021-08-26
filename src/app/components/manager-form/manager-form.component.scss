@@ -1,4 +1,10 @@
+.form-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .form-group {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,7 +12,10 @@
   align-items: flex-start;
   width: 100%;
   padding: 15px;
-
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-y: auto;
+  margin: 2px;
 
   label {
     margin-left: 10px;
@@ -14,19 +23,30 @@
   }
 }
 
+.form-group::-webkit-scrollbar {
+  width: 4px;
+}
+
+.form-group::-webkit-scrollbar-track {
+}
+
+.form-group::-webkit-scrollbar-thumb {
+  background-color: #333333;
+  border-radius: 5px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
 #name_fc {
+  box-sizing: border-box;
   width: 99%;
   height: 5vh;
   border: 2px solid #E0E3E8;
   border-radius: 5px;
-  margin: 10px;
   display: flex;
   overflow: hidden;
   word-wrap: break-word;
-  /*overflow-y: scroll;*/
   resize: none;
   padding: 5px;
-
 }
 
 .error-message {
@@ -52,8 +72,6 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
   font-size: 12px;
 
   .is-text-correct {
@@ -64,15 +82,14 @@
     color: #999999;
 
   }
-
 }
 
 #text_fc {
+  box-sizing: border-box;
   width: 99%;
   height: 66vh;
   border: 2px solid #E0E3E8;
   border-radius: 5px;
-  margin: 10px;
   display: flex;
   overflow: hidden;
   word-wrap: break-word;
@@ -82,21 +99,20 @@
 }
 
 .bottom-bar {
+  display: inline-block;
   box-sizing: border-box;
-  position: absolute;
+  position: fixed;
   bottom: 1vh;
   font-weight: 700;
   border-top: 2px solid #E0E3E8;
   width: 80%;
-  //padding: 10px;
-
+  overflow: hidden;
 }
 
 .bottom-bar-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
 }
 
 .bottom-bar-buttons {
@@ -138,7 +154,6 @@
   padding: 9px;
   width: 50%;
   border: none;
-
 }
 
 .cancel-button-bb:hover {

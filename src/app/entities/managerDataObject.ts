@@ -26,7 +26,7 @@ export class ManagerDataObject {
     result = 'Сохранен';
     break;
   default:
-    result = 'Новый'
+    result = 'Новый';
   }
   return result;
   }

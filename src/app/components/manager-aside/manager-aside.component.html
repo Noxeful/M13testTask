@@ -1,11 +1,22 @@
 <div class="list-container">
   <ng-container *ngIf="dataCollection">
-    <div *ngFor="let item of dataCollection" [ngClass]="{'selected-record': item === selectedItem}" (click)="onListItemClick(item)" class="list-item" tabindex="0">
-      <div class="no-overflow">
-        <img *ngIf="item.status == 'Новый'" class="svg-icon" src="assets/svg-icons/plus.svg"/>
-        <img *ngIf="item.status == 'Изменен'" class="svg-icon" src="assets/svg-icons/question-mark.svg"/>
-        <img *ngIf="item.status == 'Сохранен'" class="svg-icon" src="assets/svg-icons/tick.svg"/>
-        {{item.name}}
+    <div *ngFor="let item of dataCollection"
+         [ngClass]="{'selected-record': item === selectedItem}"
+         (click)="onListItemClick(item)"
+         class="list-item" tabindex="0">
+      <div class="overflow-visible">
+        <span *ngIf="item.status == 'Новый'" data-text="Новый" class="tooltip">
+          <img class="svg-icon" src="assets/svg-icons/plus.svg"/>
+        </span>
+        <span *ngIf="item.status == 'Изменен'" data-text="Изменен" class="tooltip">
+          <img  class="svg-icon" src="assets/svg-icons/question-mark.svg"/>
+        </span>
+        <span *ngIf="item.status == 'Сохранен'" data-text="Сохранен" class="tooltip">
+          <img  class="svg-icon" src="assets/svg-icons/tick.svg"/>
+        </span>
+        <span class="no-overflow">
+          {{item.name}}
+        </span>
       </div>
       <div class="inner-li">
         <img (click)="deleteRecord(item.id)" class="svg-icon" src="assets/svg-icons/trash-red.svg"/>
@@ -15,4 +26,7 @@
 </div>
 <div (click)="createNewTempRecord()" class="add-button">
   Добавить запись
+</div>
+<div *ngIf="isSavedToasterOn" class="saved-toaster">
+  Изменения сохранены
 </div>
